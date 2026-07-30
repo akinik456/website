@@ -185,6 +185,25 @@
   color: #45d8f8;
   font-size: 19px;
 }
+
+    .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:18px;
+}
+
+.gallery img{
+    width:100%;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.08);
+    transition:.25s;
+    cursor:pointer;
+}
+
+.gallery img:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 28px rgba(0,0,0,.35);
+}
     
     @media (max-width: 600px) {
       .container {
@@ -354,6 +373,30 @@
 
       </div>
     </section>
+
+    <section id="screenshots">
+
+<h2>Screenshots</h2>
+
+<div class="gallery">
+
+<img src="assets/screenshots/ss1.webp" alt="LynraFamily Screenshot 1">
+
+<img src="assets/screenshots/ss2.webp" alt="LynraFamily Screenshot 2">
+
+<img src="assets/screenshots/ss3.webp" alt="LynraFamily Screenshot 3">
+
+<img src="assets/screenshots/ss4.webp" alt="LynraFamily Screenshot 4">
+
+<img src="assets/screenshots/ss5.webp" alt="LynraFamily Screenshot 5">
+
+<img src="assets/screenshots/ss6.webp" alt="LynraFamily Screenshot 6">
+
+<img src="assets/screenshots/ss7.webp" alt="LynraFamily Screenshot 7">
+
+</div>
+
+</section>
 
     <section id="contact">
 

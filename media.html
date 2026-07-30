@@ -3,69 +3,315 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>LynraFamily Media Kit</title>
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:Arial,Helvetica,sans-serif;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    body{
-      background:#08121F;
-      color:#ffffff;
-      line-height:1.6;
+    body {
+      background: #08121f;
+      color: #ffffff;
+      line-height: 1.6;
     }
 
-    .container{
-      max-width:1100px;
-      margin:auto;
-      padding:60px 20px;
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px 70px;
     }
 
-    section{
-      margin-bottom:70px;
+    section {
+      margin-bottom: 70px;
     }
 
-    h1,h2{
-      color:#45D8F8;
-      margin-bottom:15px;
+    h1,
+    h2 {
+      color: #45d8f8;
     }
 
-    p{
-      color:#d6d6d6;
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #d6e3ef;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 70px 20px;
+    }
+
+    .hero h1 {
+      font-size: 56px;
+      margin-bottom: 8px;
+    }
+
+    .hero .subtitle {
+      font-size: 24px;
+      color: #ffffff;
+      margin-bottom: 15px;
+    }
+
+    .hero .description {
+      max-width: 760px;
+      margin: 0 auto 35px;
+      font-size: 18px;
+      color: #c8d4e0;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .badge {
+      background: #13283d;
+      color: #45d8f8;
+      padding: 12px 18px;
+      border-radius: 30px;
+      font-weight: bold;
+    }
+
+    .about-box {
+      background: #13283d;
+      border-radius: 18px;
+      padding: 35px;
+    }
+
+    .about-box p {
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 25px;
+    }
+
+    .feature-item {
+      background: #1a3550;
+      padding: 14px 18px;
+      border-radius: 12px;
+      color: #45d8f8;
+      font-weight: 600;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #13283d;
+      border-radius: 18px;
+      padding: 35px;
+      text-align: center;
+    }
+
+    .card h3 {
+      color: #45d8f8;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      margin-bottom: 25px;
+      color: #c8d4e0;
+    }
+
+    .button {
+      display: inline-block;
+      background: #45d8f8;
+      color: #08121f;
+      text-decoration: none;
+      padding: 14px 26px;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: 0.25s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    .contact-box {
+      background: #13283d;
+      border-radius: 18px;
+      padding: 35px;
+      text-align: center;
+    }
+
+    .contact-box a {
+      color: #45d8f8;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 16px 50px;
+      }
+
+      .hero {
+        padding: 50px 5px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .hero .subtitle {
+        font-size: 21px;
+      }
+
+      .about-box,
+      .card,
+      .contact-box {
+        padding: 25px;
+      }
     }
   </style>
-
 </head>
 
 <body>
 
-<div class="container">
+  <main class="container">
 
-<section id="hero">
+    <section id="hero">
+      <div class="hero">
 
-</section>
+        <h1>LynraFamily</h1>
 
-<section id="about">
+        <p class="subtitle">
+          Media Kit
+        </p>
 
-</section>
+        <p class="description">
+          Everything journalists, reviewers and content creators need to feature LynraFamily.
+        </p>
 
-<section id="features">
+        <div class="badges">
+          <div class="badge">No Ads</div>
+          <div class="badge">No Subscriptions</div>
+          <div class="badge">Pay Once</div>
+          <div class="badge">Use Forever</div>
+        </div>
 
-</section>
+      </div>
+    </section>
 
-<section id="downloads">
+    <section id="about">
 
-</section>
+      <h2>About LynraFamily</h2>
 
-<section id="contact">
+      <div class="about-box">
 
-</section>
+        <p>
+          LynraFamily is a privacy-focused location sharing app that helps couples,
+          families, friends and loved ones stay connected through live location
+          sharing and smart safety features.
+        </p>
 
-</div>
+        <p>
+          Unlike many alternatives, LynraFamily has no ads, no subscriptions and
+          uses a simple pay once, use forever model.
+        </p>
+
+        <div class="feature-list">
+          <div class="feature-item">📍 Live Location Tracking</div>
+          <div class="feature-item">🔋 GPS & Battery Alerts</div>
+          <div class="feature-item">📞 One-Tap Call Me</div>
+          <div class="feature-item">🆘 Emergency SOS</div>
+          <div class="feature-item">📲 Home Screen Widgets</div>
+          <div class="feature-item">📳 Shake to Send SOS</div>
+          <div class="feature-item">👨‍👩‍👧‍👦 Private Groups</div>
+          <div class="feature-item">🔒 Privacy First</div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="download">
+
+      <h2>Download the Apps</h2>
+
+      <div class="cards">
+
+        <div class="card">
+
+          <h3>📱 LynraFamily</h3>
+
+          <p>
+            Family Manager App
+          </p>
+
+          <a
+            class="button"
+            href="https://play.google.com/store/apps/details?id=com.lynra.beacon.requester"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on Google Play
+          </a>
+
+        </div>
+
+        <div class="card">
+
+          <h3>📱 LynraFamily Member</h3>
+
+          <p>
+            Family Member App
+          </p>
+
+          <a
+            class="button"
+            href="https://play.google.com/store/apps/details?id=com.lynra.beacon.locator"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on Google Play
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="contact">
+
+      <h2>Media Contact</h2>
+
+      <div class="contact-box">
+
+        <p>
+          Questions, review requests or media enquiries:
+        </p>
+
+        <p>
+          <a href="mailto:lynra.dev@gmail.com">
+            lynra.dev@gmail.com
+          </a>
+        </p>
+
+      </div>
+    </section>
+
+  </main>
 
 </body>
 </html>

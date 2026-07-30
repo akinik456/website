@@ -161,6 +161,31 @@
       font-weight: bold;
     }
 
+    .facts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.fact-card {
+  background: #13283d;
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid rgba(69, 216, 248, 0.12);
+}
+
+.fact-card span {
+  display: block;
+  color: #91a6b8;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.fact-card strong {
+  color: #45d8f8;
+  font-size: 19px;
+}
+    
     @media (max-width: 600px) {
       .container {
         padding: 20px 16px 50px;
@@ -213,7 +238,45 @@
 
       </div>
     </section>
+    <section id="quick-facts">
 
+  <h2>Quick Facts</h2>
+
+  <div class="facts-grid">
+
+    <div class="fact-card">
+      <span>Platform</span>
+      <strong>Android</strong>
+    </div>
+
+    <div class="fact-card">
+      <span>Category</span>
+      <strong>Location & Safety</strong>
+    </div>
+
+    <div class="fact-card">
+      <span>Business Model</span>
+      <strong>One-Time Purchase</strong>
+    </div>
+
+    <div class="fact-card">
+      <span>Subscriptions</span>
+      <strong>None</strong>
+    </div>
+
+    <div class="fact-card">
+      <span>Ads</span>
+      <strong>None</strong>
+    </div>
+
+    <div class="fact-card">
+      <span>Website</span>
+      <strong>lynra.app</strong>
+    </div>
+
+  </div>
+
+</section>
     <section id="about">
 
       <h2>About LynraFamily</h2>

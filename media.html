@@ -5,27 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>LynraFamily Media Kit</title>
-  .lightbox{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.92);
-    z-index:9999;
-    justify-content:center;
-    align-items:center;
-    padding:30px;
-}
-
-.lightbox img{
-    max-width:95%;
-    max-height:95%;
-    border-radius:18px;
-}
-
-.lightbox.active{
-    display:flex;
-}
-  <style>
+    <style>
     * {
       margin: 0;
       padding: 0;
@@ -277,6 +257,29 @@ lightbox.addEventListener("click",()=>{
         padding: 25px;
       }
     }
+
+    .lightbox{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.92);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+}
+
+.lightbox img{
+    max-width:95%;
+    max-height:95%;
+    border-radius:18px;
+}
+
+.lightbox.active{
+    display:flex;
+}
+
+  
   </style>
 </head>
 

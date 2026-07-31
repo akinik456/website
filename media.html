@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>LynraFamily Media Kit</title>
-    <style>
+
+  <style>
     * {
       margin: 0;
       padding: 0;
@@ -13,42 +14,12 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    <div class="lightbox" id="lightbox">
-
-    <img id="lightbox-image" src="">
-
-    </div>
-    
     body {
       background: #08121f;
       color: #ffffff;
       line-height: 1.6;
     }
 
-    <script>
-
-const lightbox = document.getElementById("lightbox");
-const lightboxImage = document.getElementById("lightbox-image");
-
-document.querySelectorAll(".gallery img").forEach(img=>{
-
-    img.addEventListener("click",()=>{
-
-        lightboxImage.src = img.src;
-
-        lightbox.classList.add("active");
-
-    });
-
-});
-
-lightbox.addEventListener("click",()=>{
-
-    lightbox.classList.remove("active");
-
-});
-
-</script>
     .container {
       width: 100%;
       max-width: 1100px;
@@ -257,29 +228,26 @@ lightbox.addEventListener("click",()=>{
         padding: 25px;
       }
     }
+		.lightbox{
+				display:none;
+				position:fixed;
+				inset:0;
+				background:rgba(0,0,0,.92);
+				z-index:9999;
+				justify-content:center;
+				align-items:center;
+				padding:30px;
+		}
 
-    .lightbox{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.92);
-    z-index:9999;
-    justify-content:center;
-    align-items:center;
-    padding:30px;
-}
+		.lightbox img{
+				max-width:95%;
+				max-height:95%;
+				border-radius:18px;
+		}
 
-.lightbox img{
-    max-width:95%;
-    max-height:95%;
-    border-radius:18px;
-}
-
-.lightbox.active{
-    display:flex;
-}
-
-  
+		.lightbox.active{
+				display:flex;
+		}
   </style>
 </head>
 
@@ -474,6 +442,34 @@ lightbox.addEventListener("click",()=>{
     </section>
 
   </main>
+<div class="lightbox" id="lightbox">
 
+    <img id="lightbox-image" src="">
+
+</div>
+<script>
+
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightbox-image");
+
+document.querySelectorAll(".gallery img").forEach(img=>{
+
+    img.addEventListener("click",()=>{
+
+        lightboxImage.src = img.src;
+
+        lightbox.classList.add("active");
+
+    });
+
+});
+
+lightbox.addEventListener("click",()=>{
+
+    lightbox.classList.remove("active");
+
+});
+
+</script>
 </body>
 </html>

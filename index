@@ -148,8 +148,14 @@ Family Member App
 href="https://play.google.com/store/apps/details?id=com.lynra.beacon.locator">
 Google Play
 </a>
-<div style="margin:50px 0 20px;">
 
+</div>
+</div> <!-- LynraFamily Member card -->
+
+<div style="margin:50px 0 20px;">
+<p style="color:#9aa5b1;margin-bottom:12px;">
+Featured on LaunchBuff
+</p>
   <a href="https://launchbuff.com"
      target="_blank"
      rel="noopener noreferrer"

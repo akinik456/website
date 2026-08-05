@@ -96894,7 +96894,7 @@ if(o==null)o=0
 n=A.tF(l.h(0,"offlineSince"))
 n=n==null?null:B.d.eB(n)
 l.h(0,"stationarySince")
-l=A.tF(l.h(0,"speedKmh"))
+l=A.tF(l.h(0,"speed"))
 if(l==null)l=null
 return new A.eF(m,k,s,r,q,p,o,n,l==null?0:l)},
 $S:623}

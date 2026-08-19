@@ -25,6 +25,35 @@
       max-width: 1100px;
       margin: auto;
       padding: 70px 20px;
+      position: relative;
+    }
+
+    .language-switch {
+      position: absolute;
+      top: 25px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .language-switch button {
+      border: 0;
+      background: transparent;
+      color: #6f8093;
+      cursor: pointer;
+      font-weight: 700;
+      padding: 4px;
+    }
+
+    .language-switch button.active {
+      color: #ffffff;
+    }
+
+    .language-switch span {
+      color: #44566b;
     }
 
     .hero {
@@ -106,7 +135,7 @@
 
     @media (max-width: 720px) {
       .container {
-        padding-top: 45px;
+        padding-top: 65px;
       }
 
       .brand {
@@ -116,6 +145,10 @@
       .products {
         grid-template-columns: 1fr;
       }
+
+      .language-switch {
+        top: 20px;
+      }
     }
   </style>
 </head>
@@ -124,47 +157,74 @@
 
   <div class="container">
 
+    <div class="language-switch">
+      <button id="lang-tr" onclick="setLanguage('tr')">TR</button>
+      <span>|</span>
+      <button id="lang-en" onclick="setLanguage('en')">EN</button>
+    </div>
+
     <div class="hero">
       <div class="brand">LYNRA</div>
-      <p>Simple tools for families and businesses.</p>
+
+      <p
+        data-tr="Aileler ve işletmeler için pratik çözümler."
+        data-en="Simple tools for families and businesses.">
+      </p>
     </div>
 
     <div class="products">
 
       <a class="card" href="/lynrafamily">
-        <div class="product-type">Family Safety</div>
+
+        <div
+          class="product-type"
+          data-tr="Aile Güvenliği"
+          data-en="Family Safety">
+        </div>
 
         <div class="product-name">
           LynraFamily
         </div>
 
-        <div class="description">
-          Private family location sharing, live location updates,
-          safety alerts and tools designed to help families stay connected.
+        <div
+          class="description"
+          data-tr="Özel aile konum paylaşımı, canlı konum güncellemeleri, güvenlik uyarıları ve ailenizin bağlantıda kalmasına yardımcı olan araçlar."
+          data-en="Private family location sharing, live location updates, safety alerts and tools designed to help families stay connected.">
         </div>
 
-        <div class="open">
-          Explore LynraFamily →
+        <div
+          class="open"
+          data-tr="LynraFamily'yi Keşfet →"
+          data-en="Explore LynraFamily →">
         </div>
+
       </a>
 
 
       <a class="card" href="/lynrafleet">
-        <div class="product-type">Fleet Tracking</div>
+
+        <div
+          class="product-type"
+          data-tr="Filo Takibi"
+          data-en="Fleet Tracking">
+        </div>
 
         <div class="product-name">
           LynraFleet
         </div>
 
-        <div class="description">
-          Real-time vehicle tracking for businesses.
-          Monitor vehicles, locations, movement, history and fleet activity
-          from mobile devices and the LynraFleet web panel.
+        <div
+          class="description"
+          data-tr="İşletmeler için gerçek zamanlı araç takibi. Araçlarınızı, konumlarını, hareketlerini, geçmiş rotalarını ve filo aktivitelerini mobil uygulama ve LynraFleet web panelinden takip edin."
+          data-en="Real-time vehicle tracking for businesses. Monitor vehicles, locations, movement, history and fleet activity from the mobile app and the LynraFleet web panel.">
         </div>
 
-        <div class="open">
-          Explore LynraFleet →
+        <div
+          class="open"
+          data-tr="LynraFleet'i Keşfet →"
+          data-en="Explore LynraFleet →">
         </div>
+
       </a>
 
     </div>
@@ -174,6 +234,53 @@
     </footer>
 
   </div>
+
+
+  <script>
+
+    function setLanguage(lang) {
+
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('[data-tr][data-en]').forEach(function(element) {
+        element.textContent = element.dataset[lang];
+      });
+
+      document.getElementById('lang-tr').classList.toggle(
+        'active',
+        lang === 'tr'
+      );
+
+      document.getElementById('lang-en').classList.toggle(
+        'active',
+        lang === 'en'
+      );
+
+      localStorage.setItem('lynraLanguage', lang);
+    }
+
+
+    const savedLanguage = localStorage.getItem('lynraLanguage');
+
+    if (savedLanguage === 'tr' || savedLanguage === 'en') {
+
+      setLanguage(savedLanguage);
+
+    } else {
+
+      const browserLanguage =
+        navigator.language ||
+        navigator.userLanguage ||
+        'en';
+
+      setLanguage(
+        browserLanguage.toLowerCase().startsWith('tr')
+          ? 'tr'
+          : 'en'
+      );
+    }
+
+  </script>
 
 </body>
 </html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LynraFleet | Vehicle Tracking for Businesses</title>
+
+  <meta
+    name="description"
+    content="Track company vehicles in real time with LynraFleet. Phone-based fleet tracking with live location, vehicle history and a web fleet panel."
+  >
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #08121f;
+      color: #ffffff;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    /* HEADER */
+
+    header {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    nav {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 23px;
+      font-weight: 800;
+      text-decoration: none;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #aeb9c6;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+    }
+
+    .panel-link {
+      border: 1px solid rgba(255,255,255,0.20);
+      padding: 8px 14px;
+      border-radius: 8px;
+    }
+
+    /* HERO */
+
+    .hero {
+      padding: 100px 0 90px;
+      text-align: center;
+      background:
+        radial-gradient(circle at top, #153052 0%, #08121f 55%);
+    }
+
+    .eyebrow {
+      color: #5db4ff;
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: auto;
+      font-size: 52px;
+      line-height: 1.1;
+      margin-bottom: 25px;
+    }
+
+    .hero-text {
+      max-width: 720px;
+      margin: auto;
+      color: #b4c0cc;
+      font-size: 19px;
+    }
+
+    .hero-buttons {
+      margin-top: 38px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      padding: 13px 22px;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .button-primary {
+      background: #ffffff;
+      color: #08121f;
+    }
+
+    .button-secondary {
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    /* MAIN BENEFIT */
+
+    .benefit {
+      padding: 90px 0;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: 35px;
+      margin-bottom: 18px;
+    }
+
+    .section-description {
+      max-width: 700px;
+      margin: auto;
+      color: #9eacbb;
+      font-size: 17px;
+    }
+
+    /* FEATURES */
+
+    .features-section {
+      padding: 40px 0 100px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 45px;
+    }
+
+    .feature {
+      background: #0d1a2a;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 28px;
+    }
+
+    .feature h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .feature p {
+      color: #98a7b7;
+      font-size: 15px;
+    }
+
+    /* WEB PANEL */
+
+    .panel-section {
+      background: #0b1726;
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .panel-placeholder {
+      max-width: 950px;
+      height: 480px;
+      margin: 45px auto 0;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: #101f31;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #718399;
+    }
+
+    /* HOW IT WORKS */
+
+    .how {
+      padding: 100px 0;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #152b44;
+      border-radius: 50%;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .step h3 {
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      color: #99a8b7;
+      font-size: 15px;
+    }
+
+    /* CTA */
+
+    .cta {
+      padding: 90px 20px;
+      text-align: center;
+      background: #0d1b2c;
+    }
+
+    .cta h2 {
+      font-size: 35px;
+      margin-bottom: 15px;
+    }
+
+    .cta p {
+      color: #a6b3c1;
+      margin-bottom: 30px;
+    }
+
+    /* FOOTER */
+
+    footer {
+      padding: 35px 20px;
+      text-align: center;
+      color: #6f7e8e;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #8fa1b5;
+      text-decoration: none;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 760px) {
+
+      h1 {
+        font-size: 38px;
+      }
+
+      .hero {
+        padding-top: 70px;
+      }
+
+      .features,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links a:not(.panel-link) {
+        display: none;
+      }
+
+      .panel-placeholder {
+        height: 260px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+
+      <a href="/" class="logo">LynraFleet</a>
+
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="/fleet/" class="panel-link">Web Panel</a>
+      </div>
+
+    </nav>
+  </div>
+</header>
+
+
+<section class="hero">
+
+  <div class="container">
+
+    <div class="eyebrow">
+      Vehicle Tracking for Businesses
+    </div>
+
+    <h1>
+      Track your company vehicles from anywhere.
+    </h1>
+
+    <p class="hero-text">
+      LynraFleet turns the driver's Android phone into a vehicle tracking
+      device and gives your business real-time fleet visibility through
+      a simple web panel.
+    </p>
+
+    <div class="hero-buttons">
+
+      <a href="#how" class="button button-primary">
+        See How It Works
+      </a>
+
+      <a href="/fleet/" class="button button-secondary">
+        Open Web Panel
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="benefit">
+
+  <div class="container">
+
+    <h2 class="section-title">
+      Fleet tracking without dedicated GPS hardware.
+    </h2>
+
+    <p class="section-description">
+      Use Android phones already available in your vehicles.
+      LynraFleet provides the essential tools businesses need to
+      monitor vehicles without installing a separate tracking device.
+    </p>
+
+  </div>
+
+</section>
+
+
+<section class="features-section" id="features">
+
+  <div class="container">
+
+    <div class="features">
+
+      <div class="feature">
+        <h3>Live Vehicle Location</h3>
+        <p>
+          See your vehicles and their current locations on a single map.
+        </p>
+      </div>
+
+      <div class="feature">
+        <h3>Route History</h3>
+        <p>
+          Review recent vehicle movements and routes from the fleet panel.
+        </p>
+      </div>
+
+      <div class="feature">
+        <h3>Vehicle Status</h3>
+        <p>
+          Quickly see whether vehicles are online, offline, moving or parked.
+        </p>
+      </div>
+
+      <div class="feature">
+        <h3>Speed Information</h3>
+        <p>
+          Monitor current vehicle speed directly from the tracking panel.
+        </p>
+      </div>
+
+      <div class="feature">
+        <h3>Odometer</h3>
+        <p>
+          Keep track of vehicle distance information from one place.
+        </p>
+      </div>
+
+      <div class="feature">
+        <h3>Web Fleet Panel</h3>
+        <p>
+          Monitor your fleet from a desktop browser without installing
+          additional management software.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="panel-section">
+
+  <div class="container">
+
+    <h2 class="section-title">
+      Your fleet on one screen.
+    </h2>
+
+    <p class="section-description">
+      View vehicles, locations and fleet information from the
+      LynraFleet web panel.
+    </p>
+
+    <div class="panel-placeholder">
+      LynraFleet Web Panel Screenshot
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="how" id="how">
+
+  <div class="container">
+
+    <h2 class="section-title" style="text-align:center;">
+      Simple to get started.
+    </h2>
+
+    <div class="steps">
+
+      <div class="step">
+
+        <div class="step-number">1</div>
+
+        <h3>Install</h3>
+
+        <p>
+          Install the LynraFleet vehicle app on the Android phone
+          used in the vehicle.
+        </p>
+
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-number">2</div>
+
+        <h3>Connect</h3>
+
+        <p>
+          Add the vehicle to your company's LynraFleet account.
+        </p>
+
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-number">3</div>
+
+        <h3>Track</h3>
+
+        <p>
+          Open the web panel and start monitoring your fleet.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="cta">
+
+  <h2>
+    Interested in LynraFleet?
+  </h2>
+
+  <p>
+    Contact us to learn more or try LynraFleet with your vehicles.
+  </p>
+
+  <a
+    href="mailto:contact@lynra.app"
+    class="button button-primary"
+  >
+    Contact Lynra
+  </a>
+
+</section>
+
+
+<footer>
+
+  © 2026 Lynra ·
+  <a href="/">Home</a> ·
+  <a href="/lynravehicle.html">Privacy Policy</a>
+
+</footer>
+
+</body>
+</html>

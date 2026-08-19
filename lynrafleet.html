@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>LynraFleet | Vehicle Tracking for Businesses</title>
+  <title>LynraFleet | İşletmeler İçin Araç Takibi</title>
 
   <meta
     name="description"
-    content="Track company vehicles in real time with LynraFleet. Phone-based fleet tracking with live location, vehicle history and a web fleet panel."
+    content="LynraFleet ile şirket araçlarınızı gerçek zamanlı takip edin. Ek GPS cihazı gerektirmeden canlı konum, rota geçmişi ve web paneli."
   >
 
   <style>
@@ -36,8 +36,6 @@
       padding-right: 20px;
     }
 
-    /* HEADER */
-
     header {
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
@@ -54,6 +52,12 @@
       font-weight: 800;
       text-decoration: none;
       color: #ffffff;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 22px;
+      align-items: center;
     }
 
     .nav-links {
@@ -78,7 +82,30 @@
       border-radius: 8px;
     }
 
-    /* HERO */
+    .language-switch {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .language-switch button {
+      border: 0;
+      background: transparent;
+      color: #6f8093;
+      cursor: pointer;
+      font-weight: 700;
+      padding: 4px;
+    }
+
+    .language-switch button.active {
+      color: #ffffff;
+    }
+
+    .language-switch span {
+      color: #44566b;
+    }
 
     .hero {
       padding: 100px 0 90px;
@@ -138,8 +165,6 @@
       border: 1px solid rgba(255,255,255,0.22);
     }
 
-    /* MAIN BENEFIT */
-
     .benefit {
       padding: 90px 0;
       text-align: center;
@@ -156,8 +181,6 @@
       color: #9eacbb;
       font-size: 17px;
     }
-
-    /* FEATURES */
 
     .features-section {
       padding: 40px 0 100px;
@@ -187,8 +210,6 @@
       font-size: 15px;
     }
 
-    /* WEB PANEL */
-
     .panel-section {
       background: #0b1726;
       padding: 100px 0;
@@ -207,8 +228,6 @@
       align-items: center;
       color: #718399;
     }
-
-    /* HOW IT WORKS */
 
     .how {
       padding: 100px 0;
@@ -242,8 +261,6 @@
       font-size: 15px;
     }
 
-    /* CTA */
-
     .cta {
       padding: 90px 20px;
       text-align: center;
@@ -260,8 +277,6 @@
       margin-bottom: 30px;
     }
 
-    /* FOOTER */
-
     footer {
       padding: 35px 20px;
       text-align: center;
@@ -273,8 +288,6 @@
       color: #8fa1b5;
       text-decoration: none;
     }
-
-    /* MOBILE */
 
     @media (max-width: 760px) {
 
@@ -298,8 +311,11 @@
       .panel-placeholder {
         height: 260px;
       }
-    }
 
+      .nav-right {
+        gap: 10px;
+      }
+    }
   </style>
 </head>
 
@@ -311,10 +327,25 @@
 
       <a href="/" class="logo">LynraFleet</a>
 
-      <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#how">How it works</a>
-        <a href="/fleet/" class="panel-link">Web Panel</a>
+      <div class="nav-right">
+
+        <div class="nav-links">
+          <a href="#features" data-tr="Özellikler" data-en="Features"></a>
+          <a href="#how" data-tr="Nasıl Çalışır?" data-en="How It Works"></a>
+          <a
+            href="/fleet/"
+            class="panel-link"
+            data-tr="Web Panel"
+            data-en="Web Panel">
+          </a>
+        </div>
+
+        <div class="language-switch">
+          <button id="lang-tr" onclick="setLanguage('tr')">TR</button>
+          <span>|</span>
+          <button id="lang-en" onclick="setLanguage('en')">EN</button>
+        </div>
+
       </div>
 
     </nav>
@@ -326,28 +357,37 @@
 
   <div class="container">
 
-    <div class="eyebrow">
-      Vehicle Tracking for Businesses
+    <div
+      class="eyebrow"
+      data-tr="İşletmeler İçin Araç Takibi"
+      data-en="Vehicle Tracking for Businesses">
     </div>
 
-    <h1>
-      Track your company vehicles from anywhere.
+    <h1
+      data-tr="Şirket araçlarınızı her yerden takip edin."
+      data-en="Track your company vehicles from anywhere.">
     </h1>
 
-    <p class="hero-text">
-      LynraFleet turns the driver's Android phone into a vehicle tracking
-      device and gives your business real-time fleet visibility through
-      a simple web panel.
+    <p
+      class="hero-text"
+      data-tr="LynraFleet, araçta kullanılan Android telefonu bir araç takip cihazına dönüştürür ve filonuzu basit bir web panelinden gerçek zamanlı izlemenizi sağlar."
+      data-en="LynraFleet turns the driver's Android phone into a vehicle tracking device and gives your business real-time fleet visibility through a simple web panel.">
     </p>
 
     <div class="hero-buttons">
 
-      <a href="#how" class="button button-primary">
-        See How It Works
+      <a
+        href="#how"
+        class="button button-primary"
+        data-tr="Nasıl Çalıştığını Gör"
+        data-en="See How It Works">
       </a>
 
-      <a href="/fleet/" class="button button-secondary">
-        Open Web Panel
+      <a
+        href="/fleet/"
+        class="button button-secondary"
+        data-tr="Web Paneli Aç"
+        data-en="Open Web Panel">
       </a>
 
     </div>
@@ -361,14 +401,16 @@
 
   <div class="container">
 
-    <h2 class="section-title">
-      Fleet tracking without dedicated GPS hardware.
+    <h2
+      class="section-title"
+      data-tr="Ek GPS cihazı olmadan araç takibi."
+      data-en="Fleet tracking without dedicated GPS hardware.">
     </h2>
 
-    <p class="section-description">
-      Use Android phones already available in your vehicles.
-      LynraFleet provides the essential tools businesses need to
-      monitor vehicles without installing a separate tracking device.
+    <p
+      class="section-description"
+      data-tr="Araçlarda zaten bulunan Android telefonları kullanın. LynraFleet, ayrı bir takip cihazı kurmadan işletmenizin araçlarını izlemesi için temel araç takip özelliklerini sunar."
+      data-en="Use Android phones already available in your vehicles. LynraFleet provides the essential tools businesses need to monitor vehicles without installing a separate tracking device.">
     </p>
 
   </div>
@@ -383,45 +425,74 @@
     <div class="features">
 
       <div class="feature">
-        <h3>Live Vehicle Location</h3>
-        <p>
-          See your vehicles and their current locations on a single map.
+        <h3
+          data-tr="Canlı Araç Konumu"
+          data-en="Live Vehicle Location">
+        </h3>
+
+        <p
+          data-tr="Tüm araçlarınızı ve güncel konumlarını tek bir harita üzerinde görün."
+          data-en="See your vehicles and their current locations on a single map.">
         </p>
       </div>
 
       <div class="feature">
-        <h3>Route History</h3>
-        <p>
-          Review recent vehicle movements and routes from the fleet panel.
+        <h3
+          data-tr="Rota Geçmişi"
+          data-en="Route History">
+        </h3>
+
+        <p
+          data-tr="Araçların son hareketlerini ve izledikleri rotaları görüntüleyin."
+          data-en="Review recent vehicle movements and routes from the fleet panel.">
         </p>
       </div>
 
       <div class="feature">
-        <h3>Vehicle Status</h3>
-        <p>
-          Quickly see whether vehicles are online, offline, moving or parked.
+        <h3
+          data-tr="Araç Durumu"
+          data-en="Vehicle Status">
+        </h3>
+
+        <p
+          data-tr="Araçların çevrimiçi, çevrimdışı, hareket halinde veya park halinde olduğunu kolayca görün."
+          data-en="Quickly see whether vehicles are online, offline, moving or parked.">
         </p>
       </div>
 
       <div class="feature">
-        <h3>Speed Information</h3>
-        <p>
-          Monitor current vehicle speed directly from the tracking panel.
+        <h3
+          data-tr="Hız Bilgisi"
+          data-en="Speed Information">
+        </h3>
+
+        <p
+          data-tr="Araçların güncel hız bilgisini takip panelinden izleyin."
+          data-en="Monitor current vehicle speed directly from the tracking panel.">
         </p>
       </div>
 
       <div class="feature">
-        <h3>Odometer</h3>
-        <p>
-          Keep track of vehicle distance information from one place.
+        <h3
+          data-tr="Kilometre Takibi"
+          data-en="Odometer">
+        </h3>
+
+        <p
+          data-tr="Araçların kat ettiği mesafeyi tek noktadan takip edin."
+          data-en="Keep track of vehicle distance information from one place.">
         </p>
       </div>
 
       <div class="feature">
-        <h3>Web Fleet Panel</h3>
-        <p>
-          Monitor your fleet from a desktop browser without installing
-          additional management software.
+        <h3
+          data-tr="Web Filo Paneli"
+          data-en="Web Fleet Panel">
+        </h3>
+
+        <p
+          data-tr="Ek bir yönetim yazılımı kurmadan filonuzu masaüstü tarayıcıdan takip edin."
+          data-en="Monitor your fleet from a desktop browser without installing additional management software.">
         </p>
       </div>
 
@@ -436,17 +507,22 @@
 
   <div class="container">
 
-    <h2 class="section-title">
-      Your fleet on one screen.
+    <h2
+      class="section-title"
+      data-tr="Tüm filonuz tek ekranda."
+      data-en="Your fleet on one screen.">
     </h2>
 
-    <p class="section-description">
-      View vehicles, locations and fleet information from the
-      LynraFleet web panel.
+    <p
+      class="section-description"
+      data-tr="Araçları, konumları ve filo bilgilerini LynraFleet web panelinden görüntüleyin."
+      data-en="View vehicles, locations and fleet information from the LynraFleet web panel.">
     </p>
 
-    <div class="panel-placeholder">
-      LynraFleet Web Panel Screenshot
+    <div
+      class="panel-placeholder"
+      data-tr="LynraFleet Web Panel Ekran Görüntüsü"
+      data-en="LynraFleet Web Panel Screenshot">
     </div>
 
   </div>
@@ -458,8 +534,11 @@
 
   <div class="container">
 
-    <h2 class="section-title" style="text-align:center;">
-      Simple to get started.
+    <h2
+      class="section-title"
+      style="text-align:center;"
+      data-tr="Başlamak çok kolay."
+      data-en="Simple to get started.">
     </h2>
 
     <div class="steps">
@@ -468,11 +547,14 @@
 
         <div class="step-number">1</div>
 
-        <h3>Install</h3>
+        <h3
+          data-tr="Kur"
+          data-en="Install">
+        </h3>
 
-        <p>
-          Install the LynraFleet vehicle app on the Android phone
-          used in the vehicle.
+        <p
+          data-tr="LynraFleet araç uygulamasını araçta kullanılan Android telefona kurun."
+          data-en="Install the LynraFleet vehicle app on the Android phone used in the vehicle.">
         </p>
 
       </div>
@@ -482,10 +564,14 @@
 
         <div class="step-number">2</div>
 
-        <h3>Connect</h3>
+        <h3
+          data-tr="Bağla"
+          data-en="Connect">
+        </h3>
 
-        <p>
-          Add the vehicle to your company's LynraFleet account.
+        <p
+          data-tr="Aracı şirketinizin LynraFleet hesabına ekleyin."
+          data-en="Add the vehicle to your company's LynraFleet account.">
         </p>
 
       </div>
@@ -495,10 +581,14 @@
 
         <div class="step-number">3</div>
 
-        <h3>Track</h3>
+        <h3
+          data-tr="Takip Et"
+          data-en="Track">
+        </h3>
 
-        <p>
-          Open the web panel and start monitoring your fleet.
+        <p
+          data-tr="Web panelini açın ve filonuzu takip etmeye başlayın."
+          data-en="Open the web panel and start monitoring your fleet.">
         </p>
 
       </div>
@@ -512,19 +602,21 @@
 
 <section class="cta">
 
-  <h2>
-    Interested in LynraFleet?
+  <h2
+    data-tr="LynraFleet'i denemek ister misiniz?"
+    data-en="Interested in LynraFleet?">
   </h2>
 
-  <p>
-    Contact us to learn more or try LynraFleet with your vehicles.
+  <p
+    data-tr="Daha fazla bilgi almak veya LynraFleet'i araçlarınızla denemek için bizimle iletişime geçin."
+    data-en="Contact us to learn more or try LynraFleet with your vehicles.">
   </p>
 
   <a
     href="mailto:contact@lynra.app"
     class="button button-primary"
-  >
-    Contact Lynra
+    data-tr="Bizimle İletişime Geçin"
+    data-en="Contact Lynra">
   </a>
 
 </section>
@@ -533,10 +625,68 @@
 <footer>
 
   © 2026 Lynra ·
-  <a href="/">Home</a> ·
-  <a href="/lynravehicle.html">Privacy Policy</a>
+  <a
+    href="/"
+    data-tr="Ana Sayfa"
+    data-en="Home">
+  </a>
+  ·
+  <a
+    href="/lynravehicle.html"
+    data-tr="Gizlilik Politikası"
+    data-en="Privacy Policy">
+  </a>
 
 </footer>
+
+
+<script>
+  function setLanguage(lang) {
+
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-tr][data-en]').forEach(function(element) {
+      element.textContent = element.dataset[lang];
+    });
+
+    document.getElementById('lang-tr').classList.toggle(
+      'active',
+      lang === 'tr'
+    );
+
+    document.getElementById('lang-en').classList.toggle(
+      'active',
+      lang === 'en'
+    );
+
+    localStorage.setItem('lynraLanguage', lang);
+
+    if (lang === 'tr') {
+      document.title = 'LynraFleet | İşletmeler İçin Araç Takibi';
+    } else {
+      document.title = 'LynraFleet | Vehicle Tracking for Businesses';
+    }
+  }
+
+
+  const savedLanguage = localStorage.getItem('lynraLanguage');
+
+  if (savedLanguage === 'tr' || savedLanguage === 'en') {
+    setLanguage(savedLanguage);
+  } else {
+
+    const browserLanguage =
+      navigator.language ||
+      navigator.userLanguage ||
+      'en';
+
+    setLanguage(
+      browserLanguage.toLowerCase().startsWith('tr')
+        ? 'tr'
+        : 'en'
+    );
+  }
+</script>
 
 </body>
 </html>

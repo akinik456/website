@@ -216,18 +216,27 @@
       text-align: center;
     }
 
-    .panel-placeholder {
-      max-width: 950px;
-      height: 480px;
-      margin: 45px auto 0;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: #101f31;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #718399;
-    }
+    .screenshots {
+				margin-top: 45px;
+				display: grid;
+				grid-template-columns: 2fr 1fr 1fr;
+				gap: 18px;
+				align-items: center;
+			}
+
+			.screenshots img {
+				width: 100%;
+				display: block;
+				border-radius: 14px;
+				border: 1px solid rgba(255,255,255,0.10);
+				box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+			}
+
+			@media (max-width: 760px) {
+				.screenshots {
+					grid-template-columns: 1fr;
+				}
+			}
 
     .how {
       padding: 100px 0;
@@ -518,11 +527,24 @@ data-en="LynraFleet turns the driver's Android phone into a vehicle tracking dev
       data-en="View vehicles, locations and fleet information from the LynraFleet web panel.">
     </p>
 
-    <div
-      class="panel-placeholder"
-      data-tr="LynraFleet Web Panel Ekran Görüntüsü"
-      data-en="LynraFleet Web Panel Screenshot">
-    </div>
+    <div class="screenshots">
+
+		<img
+			src="/assets/fleet/web-panel.png"
+			alt="LynraFleet Web Panel"
+		>
+
+		<img
+			src="/assets/fleet/mobile-map.png"
+			alt="LynraFleet Mobile Map"
+		>
+
+		<img
+			src="/assets/fleet/vehicle-list.png"
+			alt="LynraFleet Vehicle List"
+		>
+
+	</div>
 
   </div>
 

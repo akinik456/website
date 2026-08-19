@@ -1,211 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LynraFamily</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-}
+  <title>Lynra</title>
 
-body{
-background:#08121F;
-color:white;
-display:flex;
-justify-content:center;
-padding:40px 20px;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-.container{
-max-width:700px;
-width:100%;
-text-align:center;
-}
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, #152a47 0%, #0b1626 45%, #07101c 100%);
+      color: #ffffff;
+    }
 
-h1{
-font-size:52px;
-color:#45D8F8;
-margin-bottom:10px;
-}
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 70px 20px;
+    }
 
-.tagline{
-font-size:22px;
-margin-bottom:35px;
-color:#EAEAEA;
-}
+    .hero {
+      text-align: center;
+      margin-bottom: 55px;
+    }
 
-.features{
-display:flex;
-justify-content:center;
-gap:15px;
-flex-wrap:wrap;
-margin-bottom:40px;
-}
+    .brand {
+      font-size: 44px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
 
-.feature{
-background:#122033;
-padding:12px 18px;
-border-radius:12px;
-color:#45D8F8;
-font-weight:bold;
-}
+    .hero p {
+      color: #aebbc9;
+      font-size: 18px;
+    }
 
-.card{
-background:#122033;
-border-radius:18px;
-padding:30px;
-margin-bottom:25px;
-}
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
 
-.card h2{
-color:#45D8F8;
-margin-bottom:10px;
-}
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 20px;
+      padding: 34px;
+      text-decoration: none;
+      color: inherit;
+      transition: 0.2s ease;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+    }
 
-.card p{
-color:#ddd;
-margin-bottom:20px;
-}
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.075);
+    }
 
-.button{
-display:inline-block;
-background:#45D8F8;
-color:#08121F;
-padding:14px 26px;
-border-radius:12px;
-text-decoration:none;
-font-weight:bold;
-font-size:18px;
-}
+    .product-name {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
 
-.footer{
-margin-top:35px;
-color:#9aa5b1;
-font-size:15px;
-}
+    .product-type {
+      font-size: 14px;
+      color: #67b7ff;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 22px;
+    }
 
-a{
-color:#45D8F8;
-text-decoration:none;
-}
-</style>
+    .description {
+      color: #b8c3cf;
+      font-size: 16px;
+      line-height: 1.6;
+      flex: 1;
+    }
 
+    .open {
+      margin-top: 28px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      color: #6f7e8e;
+      font-size: 14px;
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        padding-top: 45px;
+      }
+
+      .brand {
+        font-size: 36px;
+      }
+
+      .products {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-<h1>LynraFamily</h1>
+    <div class="hero">
+      <div class="brand">LYNRA</div>
+      <p>Simple tools for families and businesses.</p>
+    </div>
 
-<p class="tagline">
-Know Where Your Loved Ones Are
-</p>
-<p style="margin-top:20px;margin-bottom:20px;">
-    <a href="media.html">Media Kit</a>
-</p>
-<div class="features">
+    <div class="products">
 
-<div class="feature">No Ads</div>
+      <a class="card" href="/lynrafamily">
+        <div class="product-type">Family Safety</div>
 
-<div class="feature">No Subscriptions</div>
+        <div class="product-name">
+          LynraFamily
+        </div>
 
-<div class="feature">Pay Once</div>
+        <div class="description">
+          Private family location sharing, live location updates,
+          safety alerts and tools designed to help families stay connected.
+        </div>
 
-<div class="feature">Use Forever</div>
+        <div class="open">
+          Explore LynraFamily →
+        </div>
+      </a>
 
-</div>
 
-<div class="card">
+      <a class="card" href="/lynrafleet">
+        <div class="product-type">Fleet Tracking</div>
 
-<h2>LynraFamily</h2>
+        <div class="product-name">
+          LynraFleet
+        </div>
 
-<p>
-Family Manager App
-</p>
+        <div class="description">
+          Real-time vehicle tracking for businesses.
+          Monitor vehicles, locations, movement, history and fleet activity
+          from mobile devices and the LynraFleet web panel.
+        </div>
 
-<a class="button"
-href="https://play.google.com/store/apps/details?id=com.lynra.beacon.requester">
-Google Play
-</a>
+        <div class="open">
+          Explore LynraFleet →
+        </div>
+      </a>
 
-</div>
+    </div>
 
-<div class="card">
+    <footer>
+      © 2026 Lynra
+    </footer>
 
-<h2>LynraFamily Member</h2>
-
-<p>
-Family Member App
-</p>
-
-<a class="button"
-href="https://play.google.com/store/apps/details?id=com.lynra.beacon.locator">
-Google Play
-</a>
-
-</div> <!-- LynraFamily Member card -->
-
-<div class="card">
-
-    <h2>❤️ Help Us Improve</h2>
-
-    <p>
-        
-        Thank you for trying LynraFamily.<br>
-        We'd love to hear your feedback.<br>
-        Every message helps us build a better app.
-    </p>
-
-    <hr style="border:0;border-top:1px solid #24384D;margin:24px 0;">
-
-    <p>
-       
-        LynraFamily'yi denediğiniz için teşekkür ederiz.<br>
-        Görüşleriniz bizim için çok değerli.<br>
-        Her mesaj uygulamamızı geliştirmemize yardımcı oluyor.
-    </p>
-
-    <a class="button" href="feedback.html">
-        Send Feedback
-    </a>
-
-</div>    
-    
-
-<div style="margin:50px 0 20px;">
-<p style="color:#9aa5b1;margin-bottom:12px;">
-Featured on LaunchBuff
-</p>
-  <a href="https://launchbuff.com"
-     target="_blank"
-     rel="noopener noreferrer"
-     title="Featured on LaunchBuff">
-
-    <img
-      src="https://launchbuff.com/badge-featured-dark.svg"
-      alt="Featured on LaunchBuff"
-      width="220">
-
-  </a>
-
-</div>
-
-<div class="footer">
-
-Official Website<br><br>
-
-📧
-<a href="mailto:lynra.dev@gmail.com">
-lynra.dev@gmail.com
-</a>
-
-</div>
+  </div>
 
 </body>
 </html>

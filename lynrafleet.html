@@ -409,6 +409,43 @@
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
+	.how-video-wrap {
+  max-width: 420px;
+  margin: 40px auto 50px;
+  text-align: center;
+}
+
+.how-video-wrap h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.how-video-text {
+  color: #9eacbb;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.how-video {
+  width: 100%;
+  max-height: 720px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #000;
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .how-video-wrap {
+    max-width: 100%;
+    margin: 30px auto 40px;
+  }
+
+  .how-video {
+    border-radius: 14px;
+  }
+}
+	
   </style>
 </head>
 
@@ -745,7 +782,30 @@ data-en="LynraFleet turns the driver's Android phone into a vehicle tracking dev
       data-en="Simple to get started.">
     </h2>
 
-    <div class="steps">
+<div class="how-video-wrap">
+
+  <h3
+    data-tr="LynraFleet Nasıl Kurulur?"
+    data-en="How to Set Up LynraFleet?">
+  </h3>
+
+  <p
+    class="how-video-text"
+    data-tr="Filonuzu oluşturun, araç telefonunu eşleştirin ve birkaç adımda takibe başlayın."
+    data-en="Create your fleet, pair the vehicle phone and start tracking in just a few steps.">
+  </p>
+
+  <video
+    class="how-video"
+    controls
+    playsinline
+    preload="metadata">
+    <source src="/assets/videos/lynrafleet-nasil-kullanilir.mp4" type="video/mp4">
+  </video>
+
+</div>
+
+<div class="steps">
 
       <div class="step">
 

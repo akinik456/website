@@ -10,6 +10,7 @@
     name="description"
     content="LynraFleet ile şirket araçlarınızı gerçek zamanlı takip edin. Ek GPS cihazı gerektirmeden canlı konum, rota geçmişi ve web paneli."
   >
+	
 
   <style>
     * {
@@ -325,6 +326,89 @@
         gap: 10px;
       }
     }
+		
+			/* PRICING */
+
+	.pricing-section {
+		padding: 100px 0;
+		background: #08121f;
+		text-align: center;
+	}
+
+	.pricing-highlight {
+		max-width: 560px;
+		margin: 45px auto 30px;
+		padding: 32px;
+		background: #0d1a2a;
+		border: 1px solid rgba(93,180,255,0.35);
+		border-radius: 18px;
+	}
+
+	.pricing-highlight h3 {
+		font-size: 22px;
+		margin-bottom: 8px;
+	}
+
+	.pricing-price {
+		font-size: 42px;
+		font-weight: 800;
+		color: #ffffff;
+		margin: 14px 0 4px;
+	}
+
+	.pricing-once {
+		color: #5db4ff;
+		font-weight: 700;
+		margin-bottom: 14px;
+	}
+
+	.pricing-detail {
+		color: #9eacbb;
+		font-size: 15px;
+	}
+
+	.pricing-extra-admin {
+		margin: 22px 0 35px;
+		color: #b4c0cc;
+	}
+
+	.vehicle-packages {
+		max-width: 760px;
+		margin: 25px auto 0;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 12px;
+	}
+
+	.vehicle-package {
+		padding: 20px 10px;
+		background: #0d1a2a;
+		border: 1px solid rgba(255,255,255,0.08);
+		border-radius: 12px;
+	}
+
+	.vehicle-package strong {
+		display: block;
+		font-size: 19px;
+		margin-bottom: 5px;
+	}
+
+	.vehicle-package span {
+		color: #5db4ff;
+		font-weight: 700;
+	}
+
+	.pricing-note {
+		margin-top: 30px;
+		color: #9eacbb;
+		font-size: 14px;
+	}
+
+	@media (max-width: 760px) {
+		.vehicle-packages {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
   </style>
 </head>
 
@@ -546,6 +630,108 @@ data-en="LynraFleet turns the driver's Android phone into a vehicle tracking dev
 
 </section>
 
+<section class="pricing-section" id="pricing">
+
+  <div class="container">
+
+    <h2
+      class="section-title"
+      data-tr="Tek seferlik ödeme. Aylık abonelik yok."
+      data-en="One-time payment. No monthly subscription.">
+    </h2>
+
+    <p
+      class="section-description"
+      data-tr="Filonuza uygun kapasiteyi seçin ve LynraFleet'i aylık araç başı abonelik ücreti olmadan kullanın."
+      data-en="Choose the capacity that fits your fleet and use LynraFleet without monthly per-vehicle subscription fees.">
+    </p>
+
+    <div class="pricing-highlight">
+
+      <h3>LynraFleet Lifetime</h3>
+
+      <div class="pricing-price">
+        590 TL
+      </div>
+
+      <div
+        class="pricing-once"
+        data-tr="Tek seferlik ödeme"
+        data-en="One-time payment">
+      </div>
+
+      <div
+        class="pricing-detail"
+        data-tr="1 yönetici + 1 araç dahil"
+        data-en="Includes 1 administrator + 1 vehicle">
+      </div>
+
+    </div>
+
+    <div
+      class="pricing-extra-admin"
+      data-tr="Ek yönetici: 490 TL · Tek seferlik"
+      data-en="Additional administrator: 490 TL · One-time">
+    </div>
+
+    <h3
+      data-tr="Ek Araç Paketleri"
+      data-en="Additional Vehicle Packages">
+    </h3>
+
+    <div class="vehicle-packages">
+
+      <div class="vehicle-package">
+        <strong>+1</strong>
+        <span>390 TL</span>
+      </div>
+
+      <div class="vehicle-package">
+        <strong>+3</strong>
+        <span>990 TL</span>
+      </div>
+
+      <div class="vehicle-package">
+        <strong>+5</strong>
+        <span>1.490 TL</span>
+      </div>
+
+      <div class="vehicle-package">
+        <strong>+10</strong>
+        <span>2.490 TL</span>
+      </div>
+
+      <div class="vehicle-package">
+        <strong>+20</strong>
+        <span>3.990 TL</span>
+      </div>
+
+      <div class="vehicle-package">
+        <strong>+30</strong>
+        <span>5.490 TL</span>
+      </div>
+
+      <div class="vehicle-package">
+        <strong>+40</strong>
+        <span>6.490 TL</span>
+      </div>
+
+      <div class="vehicle-package">
+        <strong>+50</strong>
+        <span>7.490 TL</span>
+      </div>
+
+    </div>
+
+    <p
+      class="pricing-note"
+      data-tr="Araç paketleri tek seferlik kapasite artışıdır. Aylık araç başı abonelik ücreti alınmaz."
+      data-en="Vehicle packages are one-time capacity upgrades. There is no monthly per-vehicle subscription fee.">
+    </p>
+
+  </div>
+
+</section>
 
 <section class="how" id="how">
 

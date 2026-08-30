@@ -652,11 +652,15 @@ data-en="LynraFleet turns the driver's Android phone into a vehicle tracking dev
     <div class="screenshots">
 
 		<img
+			data-tr-src="/assets/fleet/web-panel.png"
+			data-en-src="/assets/fleet/web-panel-en.png"
 			src="/assets/fleet/web-panel.png"
 			alt="LynraFleet Web Panel"
 		>
 
 		<img
+			data-tr-src="/assets/fleet/mobile-map.png"
+			data-en-src="/assets/fleet/mobile-map-en.png"
 			src="/assets/fleet/mobile-map.png"
 			alt="LynraFleet Mobile Map"
 		>
@@ -927,30 +931,38 @@ data-en="LynraFleet turns the driver's Android phone into a vehicle tracking dev
 <script>
   function setLanguage(lang) {
 
-    document.documentElement.lang = lang;
+  document.documentElement.lang = lang;
 
-    document.querySelectorAll('[data-tr][data-en]').forEach(function(element) {
-      element.textContent = element.dataset[lang];
-    });
+  // Text localization
+  document.querySelectorAll('[data-tr][data-en]').forEach(function(element) {
+    element.textContent = element.dataset[lang];
+  });
 
-    document.getElementById('lang-tr').classList.toggle(
-      'active',
-      lang === 'tr'
-    );
+  // Image localization
+  document.querySelectorAll('[data-tr-src][data-en-src]').forEach(function(element) {
+    element.src = lang === 'tr'
+        ? element.dataset.trSrc
+        : element.dataset.enSrc;
+  });
 
-    document.getElementById('lang-en').classList.toggle(
-      'active',
-      lang === 'en'
-    );
+  document.getElementById('lang-tr').classList.toggle(
+    'active',
+    lang === 'tr'
+  );
 
-    localStorage.setItem('lynraLanguage', lang);
+  document.getElementById('lang-en').classList.toggle(
+    'active',
+    lang === 'en'
+  );
 
-    if (lang === 'tr') {
-      document.title = 'LynraFleet | İşletmeler İçin Araç Takibi';
-    } else {
-      document.title = 'LynraFleet | Vehicle Tracking for Businesses';
-    }
+  localStorage.setItem('lynraLanguage', lang);
+
+  if (lang === 'tr') {
+    document.title = 'LynraFleet | İşletmeler İçin Araç Takibi';
+  } else {
+    document.title = 'LynraFleet | Vehicle Tracking for Businesses';
   }
+}
 
 
   const savedLanguage = localStorage.getItem('lynraLanguage');

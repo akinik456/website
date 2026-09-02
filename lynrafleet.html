@@ -49,10 +49,19 @@
     }
 
     .logo {
-      font-size: 23px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 28px;
       font-weight: 800;
       text-decoration: none;
-      color: #22D3EE;
+      color: #43BFF3;
+    }
+
+    .logo img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
     }
 
     .nav-right {
@@ -455,33 +464,15 @@
   <div class="container">
     <nav>
 
-      <a href="/" class="logo">LynraFleet</a>
+      <a href="/" class="logo">
+        <img src="/assets/images/fleet_icon.png" alt="LynraFleet">
+        <span>LynraFleet</span>
+      </a>
 
-      <div class="nav-right">
-
-        <div class="nav-links">
-          <a href="#features" data-tr="Özellikler" data-en="Features"></a>
-          <a href="#how" data-tr="Nasıl Çalışır?" data-en="How It Works"></a>
-					<a href="#pricing" data-tr="Fiyatlar" data-en="Pricing"></a>
-          <a
-            href="/fleet/?page=signup"
-            class="panel-link"
-            data-tr="Ücretsiz Başla"
-            data-en="Start Free">
-          </a>
-          <a
-            href="/fleet/?page=login"
-            data-tr="Giriş Yap"
-            data-en="Sign In">
-          </a>
-        </div>
-
-        <div class="language-switch">
-          <button id="lang-tr" onclick="setLanguage('tr')">TR</button>
-          <span>|</span>
-          <button id="lang-en" onclick="setLanguage('en')">EN</button>
-        </div>
-
+      <div class="language-switch">
+        <button id="lang-tr" onclick="setLanguage('tr')">TR</button>
+        <span>|</span>
+        <button id="lang-en" onclick="setLanguage('en')">EN</button>
       </div>
 
     </nav>

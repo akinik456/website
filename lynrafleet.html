@@ -42,21 +42,27 @@
     }
 
     nav {
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+			height: 72px;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			position: relative;
+		}
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 28px;
-      font-weight: 800;
-      text-decoration: none;
-      color: #43BFF3;
-    }
+		.logo {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+
+			display: flex;
+			align-items: center;
+			gap: 12px;
+
+			text-decoration: none;
+			color: #43BFF3;
+			font-size: 28px;
+			font-weight: 800;
+		}
 
     .logo img {
       width: 48px;

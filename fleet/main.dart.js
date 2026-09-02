@@ -113125,10 +113125,11 @@ A.adS.prototype={
 $2(a,b){var s,r=null
 if(b.a===B.uo)return B.aF3
 if(b.c!=null)return A.Zj(r,A.h9(A.bx(A.cd(a,B.df,t.wr).gMQ(),r,r,r,r,r,r,r),r,r))
-if(b.b==null){s=A.aCu().ga5Q().h(0,"page")
-if(s==="signup")return B.qX
+s=A.aCu().ga5Q().h(0,"page")
 if(s==="login")return B.pr
-return B.aQq}return B.VJ},
+if(s==="signup")return B.qX
+if(b.b==null)return B.aQq
+return B.VJ},
 $S:694}
 A.Qm.prototype={
 tU(a){return this.ahY(a)},

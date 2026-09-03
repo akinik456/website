@@ -163,13 +163,31 @@
     }
 
     .hero-free-note {
-      margin-top: 64px;
-      color: #69f0ae;
-      font-size: 36px;
-      font-weight: 800;
-      text-align: center;
-    }
+			margin-top: 42px;
+			color: #69f0ae;
+			font-size: 30px;
+			font-weight: 800;
+			text-align: center;
 
+			text-shadow:
+				0 0 8px rgba(105, 240, 174, 0.45),
+				0 0 18px rgba(105, 240, 174, 0.25);
+
+			animation: freePulse 2.2s ease-in-out infinite;
+		}
+
+		@keyframes freePulse {
+			0%, 100% {
+				transform: scale(1);
+				opacity: 1;
+			}
+
+			50% {
+				transform: scale(1.045);
+				opacity: 0.88;
+			}
+		}
+		
     .button {
       display: inline-block;
       text-decoration: none;

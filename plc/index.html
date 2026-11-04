@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <title>LynraControl Web BLE</title>
+</head>
+<body>
+    <h2>LynraControl</h2>
+    <button id="connectBtn">PLC'ye Bağlan</button>
+    <p id="status">Bağlantı bekleniyor...</p>
+
+    <script>
+        const SERVICE_UUID =
+            "8d21a100-64c2-4c3a-9d1e-123456789abc";
+
+        const WRITE_UUID =
+            "8d21a101-64c2-4c3a-9d1e-123456789abc";
+
+        const NOTIFY_UUID =
+            "8d21a102-64c2-4c3a-9d1e-123456789abc";
+
+        const status = document.getElementById("status");
+
+        document.getElementById("connectBtn")
+            .addEventListener("click", async () => {
+                try {
+                    status.textContent = "PLC aranıyor...";
+
+                    const device =
+                        await navigator.bluetooth.requestDevice({
+                            filters: [{ name: "LynraControl" }],
+                            optionalServices: [SERVICE_UUID]
+                        });
+
+                    status.textContent = "Bağlanıyor...";
+
+                    const server = await device.gatt.connect();
+
+                    const service =
+                        await server.getPrimaryService(SERVICE_UUID);
+
+                    const rx =
+                        await service.getCharacteristic(WRITE_UUID);
+
+                    const tx =
+                        await service.getCharacteristic(NOTIFY_UUID);
+
+                    await tx.startNotifications();
+
+                    status.textContent =
+                        "BLE bağlantısı başarılı: " + device.name;
+
+                    console.log("RX:", rx);
+                    console.log("TX:", tx);
+                }
+                catch (error) {
+                    status.textContent =
+                        "Hata: " + error.message;
+                    console.error(error);
+                }
+            });
+    </script>
+</body>
+</html>

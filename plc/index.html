@@ -11,18 +11,34 @@
     <h2>LynraControl</h2>
     <button id="connectBtn">PLC'ye Bağlan</button>
     <p id="status">Bağlantı bekleniyor...</p>
+		
+		<button id="helloBtn" disabled>HELLO Gönder</button>
 
     <script>
         const SERVICE_UUID =
             "8d21a100-64c2-4c3a-9d1e-123456789abc";
 
-        const WRITE_UUID =
+        WRITE_UUID =
             "8d21a101-64c2-4c3a-9d1e-123456789abc";
 
-        const NOTIFY_UUID =
+        NOTIFY_UUID =
             "8d21a102-64c2-4c3a-9d1e-123456789abc";
 
         const status = document.getElementById("status");
+				
+				let rx = null;
+				let tx = null;
+
+				document.getElementById("helloBtn")
+						.addEventListener("click", async () => {
+								try {
+										const frame = buildFrame(0x01, 1, []);
+										await rx.writeValue(frame);
+										status.textContent = "HELLO gönderildi, ACK bekleniyor...";
+								} catch (error) {
+										status.textContent = "HELLO hatası: " + error.message;
+								}
+						});
 
         document.getElementById("connectBtn")
             .addEventListener("click", async () => {
@@ -49,6 +65,21 @@
                         await service.getCharacteristic(NOTIFY_UUID);
 
                     await tx.startNotifications();
+										
+										tx.addEventListener("characteristicvaluechanged", (event) => {
+											const data = new Uint8Array(event.target.value.buffer,
+													event.target.value.byteOffset,
+													event.target.value.byteLength);
+
+											if (data.length >= 27 &&
+													data[0] === 0x4C &&
+													data[1] === 0x43 &&
+													data[16] === 0x02) {
+													status.textContent = "HELLO → ACK alındı!";
+											}
+									});
+
+									document.getElementById("helloBtn").disabled = false;
 
                     status.textContent =
                         "BLE bağlantısı başarılı: " + device.name;

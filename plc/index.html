@@ -105,10 +105,10 @@
                     const service =
                         await server.getPrimaryService(SERVICE_UUID);
 
-                    const rx =
+                    rx =
                         await service.getCharacteristic(WRITE_UUID);
 
-                    const tx =
+                    tx =
                         await service.getCharacteristic(NOTIFY_UUID);
 
                     await tx.startNotifications();

@@ -15,6 +15,53 @@
 		<button id="helloBtn" disabled>HELLO Gönder</button>
 
     <script>
+		
+				function calculateCRC32(data) {
+						let crc = 0xFFFFFFFF;
+
+						for (const byte of data) {
+								crc ^= byte;
+
+								for (let i = 0; i < 8; i++) {
+										crc = (crc & 1)
+												? (crc >>> 1) ^ 0xEDB88320
+												: crc >>> 1;
+								}
+						}
+
+						return (crc ^ 0xFFFFFFFF) >>> 0;
+				}
+
+				function buildFrame(type, seq, payload = []) {
+						const frame = new Uint8Array(27 + payload.length);
+
+						frame[0] = 0x4C;
+						frame[1] = 0x43;
+						frame[2] = 1;
+						frame[3] = 23;
+						frame[16] = type;
+
+						for (let i = 0; i < 4; i++) {
+								frame[17 + i] = (seq >>> (8 * i)) & 0xFF;
+						}
+
+						frame[21] = payload.length & 0xFF;
+						frame[22] = (payload.length >>> 8) & 0xFF;
+						frame.set(payload, 23);
+
+						const crc = calculateCRC32(
+								frame.subarray(2, 23 + payload.length)
+						);
+
+						const offset = 23 + payload.length;
+
+						for (let i = 0; i < 4; i++) {
+								frame[offset + i] = (crc >>> (8 * i)) & 0xFF;
+						}
+
+						return frame;
+				}
+
         const SERVICE_UUID =
             "8d21a100-64c2-4c3a-9d1e-123456789abc";
 

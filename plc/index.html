@@ -41,8 +41,8 @@
   </section>
 
   <section>
-    <h2>Test programı</h2>
-    <p class="note">Giriş 1 aktifken Çıkış 1 aktif; giriş pasifken çıkış pasif (FOLLOW). Bu işlem PLC'deki mevcut programı değiştirebilir.</p>
+    <h2 id="programHeading">Test programı</h2>
+    <p class="note" id="programDescription">Giriş 1 aktifken Çıkış 1 aktif; giriş pasifken çıkış pasif (FOLLOW). Bu işlem PLC'deki mevcut programı değiştirebilir.</p>
     <div class="buttons">
       <button id="sendBtn" disabled>Test Programını Yükle</button>
       <button id="runBtn" class="secondary" disabled>RUN</button>
@@ -100,6 +100,7 @@ const $ = id => document.getElementById(id);
 
 let device = null, rx = null, tx = null;
 let connected = false, busy = false, nextSeq = 1, pending = null;
+let sharedProgram = null, shareLoading = false, shareInvalid = false;
 
 function log(text) {
   const time = new Date().toLocaleTimeString('tr-TR');
@@ -111,7 +112,7 @@ function message(text) { $('message').textContent = text; log(text); }
 function updateButtons() {
   $('connectBtn').disabled = connected || busy;
   $('disconnectBtn').disabled = !connected || busy;
-  $('sendBtn').disabled = !connected || busy;
+  $('sendBtn').disabled = !connected || busy || shareLoading || shareInvalid;
   $('runBtn').disabled = !connected || busy;
   $('stopBtn').disabled = !connected || busy;
 }
@@ -281,11 +282,11 @@ async function disconnect() {
 }
 async function sendProgram() {
   if (!connected || busy) return;
-  if (!confirm('Test programı PLC’ye yüklensin mi? Mevcut program değişebilir.')) return;
+  if (!confirm((sharedProgram ? 'Paylaşılan program' : 'Test programı') + ' PLC’ye yüklensin mi? Mevcut program değişebilir.')) return;
   setBusy(true);
   setProgress(0);
   try {
-    const program = JSON.parse($('testProgram').textContent);
+    const program = sharedProgram ?? JSON.parse($('testProgram').textContent);
     const bytes = new TextEncoder().encode(JSON.stringify(program));
     if (!bytes.length || bytes.length > 32768) throw new Error('Program boyutu geçersiz');
     const programCRC = calculateCRC32(bytes);
@@ -326,12 +327,80 @@ async function plcCommand(type, name) {
     setBusy(false);
   }
 }
+// Flutter link format: #p=<Base64URL(GZIP(UTF-8 JSON))>.
+// The link is only decoded and displayed; it never triggers BLE writes.
+async function loadSharedProgram() {
+  sharedProgram = null;
+  shareInvalid = false;
+  const fragment = window.location.hash.slice(1);
+  const params = new URLSearchParams(fragment);
+  const payload = params.get('p');
+  if (!payload) {
+    if (fragment) {
+      shareInvalid = true;
+      $('programHeading').textContent = 'Geçersiz program bağlantısı';
+      $('programDescription').textContent = 'Linkte geçerli bir program bulunamadı.';
+      message('Geçersiz program bağlantısı.');
+    }
+    updateButtons();
+    return;
+  }
+  shareLoading = true;
+  updateButtons();
+  try {
+    if (!/^[A-Za-z0-9_-]+$/.test(payload) || payload.length > 60000)
+      throw new Error('Link verisi geçersiz veya çok uzun');
+    if (typeof DecompressionStream === 'undefined')
+      throw new Error('Tarayıcı GZIP çözmeyi desteklemiyor; güncel Android Chrome kullanın');
+    const b64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+    const binary = atob(b64.padEnd(Math.ceil(b64.length / 4) * 4, '='));
+    const compressed = Uint8Array.from(binary, c => c.charCodeAt(0));
+    const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
+    const reader = stream.getReader();
+    const chunks = [];
+    let total = 0;
+    while (true) {
+      const {value, done} = await reader.read();
+      if (done) break;
+      total += value.length;
+      if (total > 32768) {
+        await reader.cancel();
+        throw new Error('Program 32768 bayt sınırını aşıyor');
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(total);
+    let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
+    const program = JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(bytes));
+    if (!program || typeof program !== 'object' || Array.isArray(program) ||
+        program.formatVersion !== 2 || !Array.isArray(program.controlBlocks))
+      throw new Error('PLC program formatı geçersiz');
+    sharedProgram = program;
+    $('programHeading').textContent = 'Paylaşılan program';
+    $('programDescription').textContent =
+      'Program: ' + (typeof program.name === 'string' ? program.name : 'Adsız') +
+      ' (' + total + ' bayt). Yükleme mevcut PLC programını değiştirebilir.';
+    $('sendBtn').textContent = 'Paylaşılan Programı Yükle';
+    message('Linkteki program okundu. PLC’ye bağlanıp yüklemeyi onaylayabilirsiniz.');
+  } catch (err) {
+    shareInvalid = true;
+    $('programHeading').textContent = 'Program bağlantısı okunamadı';
+    $('programDescription').textContent = 'Program yükleme kapatıldı. Lütfen geçerli bir link açın.';
+    message('Link çözme hatası: ' + err.message);
+  } finally {
+    shareLoading = false;
+    updateButtons();
+  }
+}
+
 $('connectBtn').addEventListener('click', connect);
 $('disconnectBtn').addEventListener('click', disconnect);
 $('sendBtn').addEventListener('click', sendProgram);
 $('runBtn').addEventListener('click', () => plcCommand(0x20, 'RUN'));
 $('stopBtn').addEventListener('click', () => plcCommand(0x21, 'STOP'));
 updateButtons();
+loadSharedProgram();
 </script>
 </body>
 </html>

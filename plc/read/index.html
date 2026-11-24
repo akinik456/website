@@ -17,7 +17,8 @@
     pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #0b1525; border-radius: 9px; padding: 12px; max-height: 280px; overflow: auto; font-size: 12px; }
     progress { width: 100%; height: 15px; }
     #message { color: #b8d8ff; min-height: 1.5em; }
-  </style></head><body><main><h1>LynraControl</h1><p class="sub">Web Bluetooth · Program okuma</p><section><h2>Bağlantı</h2><div class="line"><span>BLE</span><strong id="bleStatus">Bağlı değil</strong></div><div class="line"><span>Cihaz</span><strong id="plcStatus">Bilinmiyor</strong></div><div class="buttons"><button id="connectBtn">Cihaza Bağlan</button><button id="disconnectBtn" class="secondary" disabled>Bağlantıyı Kes</button></div></section><section><h2>Program okuma</h2><p class="note">Bu işlem cihazdaki programı değiştirmez veya durdurmaz.</p><button id="readBtn" disabled>Programı Oku</button><p id="message" role="status">Bağlantı bekleniyor.</p><progress id="progress" max="100" value="0"></progress><p id="progressLabel">%0</p><div class="line"><span>Program adı</span><strong id="programName">—</strong></div><details><summary>Program verisi (test)</summary><pre id="preview"></pre></details></section><section><h2>İşlem kaydı</h2><pre id="log">Hazır.</pre></section></main><script>'use strict';
+  input { background:#0b1525; color:#edf3fc; border:1px solid #526987; border-radius:9px; padding:12px; font-size:20px; width:150px; letter-spacing:4px; }
+</style></head><body><main><h1>LynraControl</h1><p class="sub">Web Bluetooth · Program okuma</p><section><h2>Okuma kodu</h2><p class="note">Teknisyeninizin verdiği 6 haneli kodu girin.</p><div class="buttons"><input id="code" aria-label="Okuma kodu" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="000000"><button id="validateBtn">Kodu Doğrula</button></div><p id="codeStatus" role="status" class="note">Kod bekleniyor.</p></section><section><h2>Bağlantı</h2><div class="line"><span>BLE</span><strong id="bleStatus">Bağlı değil</strong></div><div class="line"><span>Cihaz</span><strong id="plcStatus">Bilinmiyor</strong></div><div class="buttons"><button id="connectBtn">Cihaza Bağlan</button><button id="disconnectBtn" class="secondary" disabled>Bağlantıyı Kes</button></div></section><section><h2>Program okuma</h2><p class="note">Bu işlem cihazdaki programı değiştirmez veya durdurmaz.</p><button id="readBtn" disabled>Programı Oku</button><p id="message" role="status">Bağlantı bekleniyor.</p><progress id="progress" max="100" value="0"></progress><p id="progressLabel">%0</p><div class="line"><span>Program adı</span><strong id="programName">—</strong></div><div class="buttons"><button id="submitBtn" disabled>Teknisyene Gönder</button></div><p id="submitStatus" role="status" class="note"></p></section><section><h2>İşlem kaydı</h2><pre id="log">Hazır.</pre></section></main><script>'use strict';
 const SERVICE_UUID = '8d21a100-64c2-4c3a-9d1e-123456789abc';
 const WRITE_UUID   = '8d21a101-64c2-4c3a-9d1e-123456789abc';
 const NOTIFY_UUID  = '8d21a102-64c2-4c3a-9d1e-123456789abc';
@@ -26,6 +27,47 @@ const $ = id => document.getElementById(id);
 let device = null, rx = null, tx = null;
 let connected = false, busy = false, nextSeq = 1, pending = null;
 let programJson = null;
+let verifiedCode = null, token = null, delivered = false;
+const API = 'https://us-central1-lynracontrol.cloudfunctions.net/';
+async function api(name, body) {
+  const response = await fetch(API + name, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body), cache:'no-store', signal:AbortSignal.timeout(40000)});
+  const result = await response.json();
+  if (!response.ok) {
+    const error = new Error(response.status === 429 ? 'Çok fazla deneme. Daha sonra tekrar deneyin.' : [403,404].includes(response.status) ? 'Kod geçersiz, kullanılmış veya süresi dolmuş.' : 'Sunucu hatası (' + response.status + ')');
+    error.status = response.status; throw error;
+  }
+  return result;
+}
+async function validateCode() {
+  if (busy || delivered) return;
+  const code = $('code').value.trim();
+  if (!/^\d{6}$/.test(code)) { $('codeStatus').textContent = '6 haneli kod girin.'; return; }
+  token = null; verifiedCode = null; programJson = null;
+  $('programName').textContent = '—'; $('submitStatus').textContent = ''; setProgress(0);
+  setBusy(true); $('codeStatus').textContent = 'Doğrulanıyor...';
+  try {
+    const result = await api('validateReadCode', {code});
+    if (typeof result.token !== 'string' || !/^[a-f0-9]{64}$/.test(result.token)) throw new Error('Geçersiz sunucu yanıtı');
+    token = result.token; verifiedCode = code;
+    $('codeStatus').textContent = 'Kod doğrulandı. Cihaza bağlanabilirsiniz.';
+  } catch (err) { $('codeStatus').textContent = err.message; }
+  finally { setBusy(false); }
+}
+async function submitProgram() {
+  if (busy || delivered || !token || !programJson) return;
+  setBusy(true); $('submitStatus').textContent = 'Program gönderiliyor...';
+  try {
+    const result = await api('submitReadProgram', {code:verifiedCode, token, programJson});
+    if (result.ok !== true) throw new Error('Teslim doğrulanamadı');
+    delivered = true; token = null; verifiedCode = null; programJson = null;
+    $('code').value = ''; $('codeStatus').textContent = 'Kod kullanıldı.';
+    $('submitStatus').textContent = 'Program teknisyenin hesabına başarıyla kaydedildi.';
+  } catch (err) {
+    $('submitStatus').textContent = err.message + ' Teslim doğrulanamadı; teknisyeninizden kontrol etmesini isteyin.';
+    if ([403,404].includes(err.status)) { token = null; verifiedCode = null; $('codeStatus').textContent = 'Kodu yeniden doğrulayın veya yeni kod isteyin.'; }
+  } finally { setBusy(false); }
+}
+
 
 function log(text) {
   const time = new Date().toLocaleTimeString('tr-TR');
@@ -35,9 +77,12 @@ function log(text) {
 }
 function message(text) { $('message').textContent = text; log(text); }
 function updateButtons() {
-  $('connectBtn').disabled = connected || busy;
+  $('connectBtn').disabled = connected || busy || !token || delivered;
+  $('code').disabled = busy || !!token || delivered;
+  $('validateBtn').disabled = busy || !!token || delivered;
+  $('submitBtn').disabled = busy || !token || !programJson || delivered;
   $('disconnectBtn').disabled = !connected || busy;
-  $('readBtn').disabled = !connected || busy;
+  $('readBtn').disabled = !connected || busy || !token || delivered;
 }
 function setBusy(value) { busy = value; updateButtons(); }
 function setProgress(value) {
@@ -229,9 +274,10 @@ async function requestPacket(type, payload = new Uint8Array()) {
   }
 }
 async function readProgram() {
-  if (!connected || busy) return;
+  if (!connected || busy || !token || delivered) return;
+  $('submitStatus').textContent = '';
   setBusy(true); setProgress(0); programJson = null;
-  $('programName').textContent = '—'; $('preview').textContent = '';
+  $('programName').textContent = '—';
   try {
     message('Program bilgisi okunuyor...');
     const info = await requestPacket(0x40);
@@ -253,11 +299,13 @@ async function readProgram() {
     if (!program || ![1,2].includes(program.formatVersion) || !Array.isArray(program.controlBlocks) || !program.controlBlocks.length) throw new Error('Geçersiz program formatı');
     programJson = json;
     $('programName').textContent = typeof program.name === 'string' ? program.name : 'Adsız';
-    $('preview').textContent = JSON.stringify(program, null, 2);
+    if (program.formatVersion !== 2 || typeof program.name !== 'string' || program.name.length > 256) { programJson = null; throw new Error('Program formatı sunucu ile uyumlu değil'); }
     message(`Program okundu: ${size} bayt. CRC32 doğrulandı.`);
   } catch (err) { message('Okuma hatası: ' + err.message); }
   finally { setBusy(false); }
 }
+$('validateBtn').addEventListener('click', validateCode);
+$('submitBtn').addEventListener('click', submitProgram);
 $('connectBtn').addEventListener('click', connect);
 $('disconnectBtn').addEventListener('click', disconnect);
 $('readBtn').addEventListener('click', readProgram);

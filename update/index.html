@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>LynraControl OTA Test</title><style>
+    :root { color-scheme: dark; font-family: system-ui, -apple-system, Segoe UI, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0c1422; color: #edf3fc; }
+    main { max-width: 650px; margin: 45px auto; padding: 0 20px; }
+    h1 { margin-bottom: 4px; font-size: 30px; }
+    .sub { color: #a8b8cd; margin-top: 0; }
+    section { background: #17243a; border: 1px solid #2b3e59; border-radius: 15px; padding: 20px; margin: 18px 0; }
+    h2 { margin: 0 0 14px; font-size: 19px; }
+    .line { display: flex; justify-content: space-between; gap: 12px; margin: 10px 0; }
+    .muted { color: #a8b8cd; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+    button { background: #4c91f6; color: #081321; font-weight: 700; border: 0; border-radius: 9px; padding: 12px 15px; cursor: pointer; }
+    button.secondary { background: #334966; color: #fff; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    .note { color: #b8c7da; font-size: 14px; line-height: 1.5; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #0b1525; border-radius: 9px; padding: 12px; max-height: 280px; overflow: auto; font-size: 12px; }
+    progress { width: 100%; height: 15px; }
+    #message { color: #b8d8ff; min-height: 1.5em; }
+  </style></head><body><main><h1>LynraControl</h1><p class="sub">Firmware güncelleme · Prototip testi</p><section><h2>Bağlantı</h2><p id="status">Bağlı değil</p><p>OTA kapasitesi: <strong id="capacity">—</strong></p><div class="buttons"><button id="connect">Bağlan</button><button id="disconnect" class="secondary">Bağlantıyı kes</button></div></section><section><h2>Firmware dosyası</h2><p class="note">Yalnızca kendi derlediğiniz ESP32 firmware.bin dosyasını kullanın. İmza ve model doğrulaması henüz yok. Test cihazında, yükler ayrılmışken kullanın. Güncelleme cihazı STOP durumuna alır; yeniden başlatmada kayıtlı program otomatik çalışabilir.</p><input id="file" type="file" accept=".bin"><p id="details"></p><div class="buttons"><button id="start">Güncellemeyi başlat</button><button id="cancel" class="secondary">İptal</button><button id="reboot" class="secondary">Yeniden başlat</button></div><p id="message" role="status">Hazır.</p><progress id="progress" max="100" value="0"></progress><p id="rate" class="note"></p></section><section><h2>İşlem kaydı</h2><pre id="log">Hazır.</pre></section></main><script>
+'use strict';
+const SERVICE_UUID='8d21a100-64c2-4c3a-9d1e-123456789abc', WRITE_UUID='8d21a101-64c2-4c3a-9d1e-123456789abc', NOTIFY_UUID='8d21a102-64c2-4c3a-9d1e-123456789abc';
+const $=id=>document.getElementById(id);
+let device,rx,tx,pending,seq=1,capacity=0,busy=false,connected=false,cancelled=false,phase='idle',readySize=0;
+function log(t){$('log').textContent+='\n['+new Date().toLocaleTimeString('tr-TR')+'] '+t;$('log').scrollTop=$('log').scrollHeight;}
+function msg(t){$('message').textContent=t;log(t);}
+function calculateCRC32(data) {
+  let crc = 0xFFFFFFFF;
+  for (const byte of data) {
+    crc ^= byte;
+    for (let i = 0; i < 8; i++) {
+      crc = (crc & 1) ? ((crc >>> 1) ^ 0xEDB88320) : (crc >>> 1);
+    }
+  }
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+function putU32LE(data, offset, value) {
+  for (let i = 0; i < 4; i++) data[offset + i] = (value >>> (i * 8)) & 0xFF;
+}
+function getU32LE(data, offset) {
+  return (data[offset] | (data[offset+1] << 8) |
+    (data[offset+2] << 16) | (data[offset+3] << 24)) >>> 0;
+}
+function buildFrame(type, seq, payload = new Uint8Array()) {
+  if (payload.length > 65535) throw new Error('Payload çok büyük');
+  const frame = new Uint8Array(27 + payload.length);
+  frame[0] = 0x4C;
+  frame[1] = 0x43;
+  frame[2] = 1;
+  frame[3] = 23;
+  frame[16] = type;
+  putU32LE(frame, 17, seq);
+  frame[21] = payload.length & 0xFF;
+  frame[22] = (payload.length >>> 8) & 0xFF;
+  frame.set(payload, 23);
+  putU32LE(frame, 23 + payload.length,
+    calculateCRC32(frame.subarray(2, 23 + payload.length)));
+  return frame;
+}
+function parseFrame(data) {
+  if (data.length < 27 || data[0] !== 0x4C || data[1] !== 0x43 ||
+      data[2] !== 1 || data[3] !== 23) return null;
+  const length = data[21] | (data[22] << 8);
+  if (data.length !== 27 + length) return null;
+  const crc = getU32LE(data, data.length - 4);
+  if (crc !== calculateCRC32(data.subarray(2, data.length - 4))) {
+    log('Gelen paket: CRC hatası');
+    return null;
+  }
+  return { type: data[16], seq: getU32LE(data, 17), payload: data.subarray(23, 23 + length) };
+}
+
+function buttons(){ $('connect').disabled=busy||connected; $('disconnect').disabled=busy||!connected; $('file').disabled=busy||phase==='ready'||phase==='uncertain'; $('start').disabled=busy||!connected||!capacity||!$('file').files.length||phase!=='idle'; $('cancel').disabled=!busy||phase!=='transfer'; $('reboot').disabled=busy||!connected||phase!=='ready'; }
+function notify(e){const v=e.target.value;const f=parseFrame(new Uint8Array(v.buffer,v.byteOffset,v.byteLength));if(!f||!pending||f.type!==0x56||f.seq!==pending.seq||f.payload.length!==9||f.payload[0]!==pending.cmd)return;pending.resolve({err:getU32LE(f.payload,1),value:getU32LE(f.payload,5)});}
+function disconnected(){connected=false;capacity=0;rx=null;tx=null;$('status').textContent='Bağlı değil';$('capacity').textContent='—';if(pending)pending.reject(new Error('BLE bağlantısı kesildi'));buttons();log('BLE bağlantısı kesildi');}
+async function request(cmd,payload=new Uint8Array(),timeout=4000,retries=3){if(!connected||!rx||pending)throw Error('BLE hazır değil');const n=seq++>>>0,frame=buildFrame(cmd,n,payload);let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b});promise.catch(()=>{});const w={seq:n,cmd,resolve,reject};pending=w;try{for(let i=0;i<retries;i++){if(!connected)throw Error('BLE bağlantısı kesildi');if(i)log('Tekrar: '+cmd.toString(16)+' SEQ='+n);if(rx.writeValueWithResponse)await rx.writeValueWithResponse(frame);else await rx.writeValue(frame);let timer;try{const r=await Promise.race([promise,new Promise((_,b)=>{timer=setTimeout(()=>b(Error('Yanıt zaman aşımı')),timeout)})]);if(r.err)throw Error('ESP hata 0x'+r.err.toString(16)+' (komut 0x'+cmd.toString(16)+')');return r.value;}catch(e){if(e.message!=='Yanıt zaman aşımı'||i===retries-1)throw e;}finally{clearTimeout(timer);}}}finally{if(pending===w)pending=null;}}
+async function connect(){if(!navigator.bluetooth){msg('Web Bluetooth desteklenmiyor. Android Chrome veya Windows Chrome ve HTTPS kullanın.');return;}busy=true;buttons();try{device=await navigator.bluetooth.requestDevice({filters:[{name:'LynraControl'}],optionalServices:[SERVICE_UUID]});device.addEventListener('gattserverdisconnected',disconnected);const server=await device.gatt.connect(),service=await server.getPrimaryService(SERVICE_UUID);rx=await service.getCharacteristic(WRITE_UUID);tx=await service.getCharacteristic(NOTIFY_UUID);tx.addEventListener('characteristicvaluechanged',notify);await tx.startNotifications();connected=true;capacity=await request(0x50);$('status').textContent='Bağlı: '+device.name;$('capacity').textContent=capacity.toLocaleString('tr-TR')+' byte';msg('FW_INFO başarılı.');}catch(e){msg(e.message);if(device?.gatt?.connected)device.gatt.disconnect();disconnected();}finally{busy=false;buttons();}}
+function u32(n){const p=new Uint8Array(4);putU32LE(p,0,n);return p;}
+async function start(){const file=$('file').files[0];if(!file||!connected||busy||phase!=='idle')return;if(!file.size||file.size>capacity){msg('Dosya OTA alanına sığmıyor.');return;}if(!confirm('Test cihazı STOP olacak. Yükler ayrıldı mı?'))return;busy=true;cancelled=false;phase='transfer';buttons();let began=false;try{const bytes=new Uint8Array(await file.arrayBuffer());if(bytes[0]!==0xe9)throw Error('ESP uygulama imajı başlığı geçersiz');$('progress').value=0;began=true;if(await request(0x51,u32(bytes.length),12000)!==0)throw Error('BEGIN konumu geçersiz');msg('FW_BEGIN başarılı.');const t=performance.now();for(let off=0;off<bytes.length;){if(cancelled)throw Error('Kullanıcı iptal etti');const chunk=bytes.subarray(off,off+200),p=new Uint8Array(4+chunk.length);putU32LE(p,0,off);p.set(chunk,4);const end=off+chunk.length;if(await request(0x52,p)!==end)throw Error('ESP yazma konumu uyuşmuyor');off=end;$('progress').value=100*off/bytes.length;$('rate').textContent=`%${(100*off/bytes.length).toFixed(1)} · ${off}/${bytes.length} byte · ${(off/Math.max(1,performance.now()-t)*1000/1024).toFixed(1)} KiB/s`; }if(cancelled)throw Error('Kullanıcı iptal etti');phase='finishing';buttons();msg('FW_END: imaj doğrulanıyor...');if(await request(0x53,new Uint8Array(),15000)!==bytes.length)throw Error('END boyutu uyuşmuyor');readySize=bytes.length;phase='ready';msg('Aktarım tamamlandı, boot partition seçildi. Yeniden başlatma ve seri log doğrulaması bekleniyor.');}catch(e){msg('Hata: '+e.message);if(phase==='finishing'){phase='uncertain';msg('END sonucu belirsiz. Tekrar yüklemeden önce seri log ile kontrol edin.');}else{if(began&&connected){try{await request(0x54);log('FW_ABORT başarılı');}catch(a){log('İptal doğrulanamadı: '+a.message);}}phase='idle';}}finally{busy=false;buttons();}}
+async function reboot(){if(!connected||busy||phase!=='ready')return;if(!confirm('Cihaz yeniden başlayacak ve kayıtlı program çalışabilir. Devam?'))return;busy=true;buttons();try{const v=await request(0x55,new Uint8Array(),2000,1);if(v!==readySize)throw Error('REBOOT boyutu uyuşmuyor');msg('REBOOT kabul edildi. Seri monitörde OTA RUNNING ve program durumunu kontrol edin.');}catch(e){msg('REBOOT sonucu belirsiz: '+e.message+'. Seri monitörü kontrol edin.');}finally{phase='uncertain';busy=false;buttons();}}
+$('connect').onclick=connect;$('disconnect').onclick=()=>device?.gatt?.disconnect();$('start').onclick=start;$('cancel').onclick=()=>{cancelled=true;};$('reboot').onclick=reboot;$('file').onchange=()=>{$('details').textContent=$('file').files[0]?$('file').files[0].name+' · '+$('file').files[0].size+' byte':'';buttons();};window.addEventListener('beforeunload',e=>{if(busy||phase==='ready'){e.preventDefault();e.returnValue='';}});buttons();
+</script></body></html>
